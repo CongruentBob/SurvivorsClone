@@ -55,12 +55,14 @@ wait_time = 0.075
 [node name="TornadoTimer" type="Timer" parent="Attack"]
 unique_name_in_owner = true
 wait_time = 3.0
-autostart = true
 
 [node name="TornadoAttackTimer" type="Timer" parent="Attack/TornadoTimer"]
 unique_name_in_owner = true
 wait_time = 0.2
 autostart = true
+
+[node name="JavelinBase" type="Node2D" parent="Attack"]
+unique_name_in_owner = true
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 collision_layer = 4

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbf4ncb68pkry"]
+[gd_scene load_steps=5 format=3 uid="uid://721eq7q6mqai"]
 
 [ext_resource type="Texture2D" uid="uid://dfmho72syomgs" path="res://Textures/Items/Weapons/tornado.png" id="1_0m7ep"]
 [ext_resource type="AudioStream" uid="uid://bpi78pp4sy86d" path="res://Audio/SoundEffect/tornado.ogg" id="1_lfn7j"]
