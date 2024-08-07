@@ -38,7 +38,6 @@ func enemy_hit(charge = 1):
 		destroyed.emit(self)
 		queue_free()
 
-
 func _on_timer_timeout():
 	destroyed.emit(self)
 	queue_free()
