@@ -3,14 +3,17 @@ extends CharacterBody2D
 @export var movement_speed = 20.0
 @export var hit_points = 10
 @export var knockback_recovery = 3.5
+@export var experience = 1
 var knockback_vector = Vector2.ZERO
 
 @onready var player = get_tree().get_first_node_in_group("player")
+@onready var loot_base = get_tree().get_first_node_in_group("loot")
 @onready var sprite = $Sprite2D
 @onready var animation = $AnimationPlayer
 @onready var sound_hit = $SoundHit
 
 var death_scene = preload("res://Enemy/explosion.tscn")
+var loot_gem = preload("res://Objects/experience_gem.tscn")
 
 signal destroyed(object)
 
@@ -42,5 +45,9 @@ func death():
 	death_exp_scene.scale = sprite.scale
 	death_exp_scene.global_position = global_position
 	get_parent().call_deferred("add_child", death_exp_scene)
+	var exp_gem = loot_gem.instantiate()
+	exp_gem.global_position = global_position
+	exp_gem.experience = experience
+	loot_base.call_deferred("add_child", exp_gem)
 	destroyed.emit(self)
 	queue_free()

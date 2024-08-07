@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cypfwgrug264p"]
+
+[ext_resource type="Script" path="res://Player/gui_layer.gd" id="1_8rdca"]
+[ext_resource type="Texture2D" uid="uid://b8jk0g6hcnvx4" path="res://Textures/GUI/exp_background.png" id="1_cp2eu"]
+[ext_resource type="Texture2D" uid="uid://bbf36mwk73nkk" path="res://Textures/GUI/exp_progress.png" id="2_ijmpo"]
+[ext_resource type="FontFile" uid="uid://c35xk5aai34sh" path="res://Font/tenderness.otf" id="3_idhwe"]
+
+[node name="GUILayer" type="CanvasLayer"]
+script = ExtResource("1_8rdca")
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="GUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_under = ExtResource("1_cp2eu")
+texture_progress = ExtResource("2_ijmpo")
+
+[node name="LabelLevel" type="Label" parent="GUI/ExperienceBar"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 540.0
+offset_right = 640.0
+offset_bottom = 20.0
+theme_override_fonts/font = ExtResource("3_idhwe")
+theme_override_font_sizes/font_size = 16
+text = "Level 1"
+horizontal_alignment = 1
+vertical_alignment = 2

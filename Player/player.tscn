@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkjlgchisi4fg"]
+[gd_scene load_steps=10 format=3 uid="uid://dkjlgchisi4fg"]
 
 [ext_resource type="Texture2D" uid="uid://b82wo2yylqwgx" path="res://Textures/Player/player_sprite.png" id="1_eljkx"]
 [ext_resource type="Script" path="res://Player/player.gd" id="1_ikb7l"]
 [ext_resource type="PackedScene" uid="uid://bhaq6gq1dfvdg" path="res://Utitlity/hurt_box.tscn" id="3_4ld13"]
+[ext_resource type="PackedScene" uid="uid://cypfwgrug264p" path="res://Player/gui_layer.tscn" id="4_bn405"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uo68k"]
 radius = 4.0
@@ -13,6 +14,11 @@ size = Vector2(11, 19)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hgov0"]
 radius = 370.001
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_codl0"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3ejc"]
 
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
@@ -26,6 +32,7 @@ frame = 1
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(2, 2)
 shape = SubResource("CapsuleShape2D_uo68k")
 
@@ -35,6 +42,7 @@ wait_time = 0.2
 one_shot = true
 
 [node name="HurtBox" parent="." instance=ExtResource("3_4ld13")]
+visible = false
 collision_mask = 2
 HurtBoxType = 2
 
@@ -43,6 +51,7 @@ position = Vector2(2, 3)
 shape = SubResource("RectangleShape2D_tpndu")
 
 [node name="Attack" type="Node2D" parent="."]
+visible = false
 
 [node name="IceSpearTimer" type="Timer" parent="Attack"]
 unique_name_in_owner = true
@@ -65,12 +74,29 @@ autostart = true
 unique_name_in_owner = true
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 4
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea"]
 shape = SubResource("CircleShape2D_hgov0")
+
+[node name="GrabArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea"]
+shape = SubResource("CircleShape2D_codl0")
+
+[node name="CollectArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
+shape = SubResource("CircleShape2D_h3ejc")
+
+[node name="GUILayer" parent="." instance=ExtResource("4_bn405")]
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
 [connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]
@@ -79,5 +105,7 @@ shape = SubResource("CircleShape2D_hgov0")
 [connection signal="timeout" from="Attack/TornadoTimer/TornadoAttackTimer" to="." method="_on_tornado_attack_timer_timeout"]
 [connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
 [connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
+[connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
+[connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
 
 [editable path="HurtBox"]

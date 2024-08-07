@@ -5,6 +5,10 @@ const MOVEMENT_SPEED = 40.0
 var hit_points = 80
 var last_movement = Vector2.LEFT
 
+var experience = 0
+var experience_level = 1
+var collected_experience = 0
+
 #Attacks
 var ice_spear = preload("res://Player/Attack/ice_spear.tscn")
 var tornado = preload("res://Player/Attack/tornado.tscn")
@@ -16,6 +20,7 @@ var javelin = preload("res://Player/Attack/javelin.tscn")
 @onready var tornado_timer = %TornadoTimer
 @onready var tornado_attack_timer = %TornadoAttackTimer
 @onready var javelin_base = %JavelinBase
+@onready var gui = $GUILayer
 
 #IceSpear
 var ice_spear_ammo = 0
@@ -41,6 +46,7 @@ var close_enemies = []
 
 func _ready():
 	attack()
+	gui.set_experience(experience, calculate_experience_cap())
 
 func _physics_process(delta):
 	movement()
@@ -137,3 +143,30 @@ func _on_enemy_detection_area_body_entered(body):
 func _on_enemy_detection_area_body_exited(body):
 	if close_enemies.has(body):
 		close_enemies.erase(body)
+
+func _on_grab_area_area_entered(area):
+	if area.is_in_group("loot"):
+		area.target = self
+
+func _on_collect_area_area_entered(area):
+	if area.is_in_group("loot"):
+		var gem_exp = area.collect()
+		calculate_experience_gained(gem_exp)
+
+func calculate_experience_gained(gem_exp):
+	var exp_required = calculate_experience_cap()
+	collected_experience += gem_exp
+	if experience + collected_experience >= exp_required:
+		collected_experience -= exp_required - experience
+		experience_level += 1
+		gui.set_level(experience_level)
+		experience = 0
+		exp_required = calculate_experience_cap()
+		calculate_experience_gained(0)
+	else:
+		experience += collected_experience
+		collected_experience = 0
+	gui.set_experience(experience, exp_required)
+	
+func calculate_experience_cap():
+	return 300 * exp((experience_level - 19) / 50.0) - 205
